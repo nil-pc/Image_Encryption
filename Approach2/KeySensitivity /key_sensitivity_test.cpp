@@ -12,15 +12,38 @@ using namespace cv;
 int rows;
 int cols;
 string fileName, ext;
+vector<int> rotate(vector<int> vec, int d)
+{
+
+    // Push first d elements from the beginning
+    // to the end and remove those elements
+    // from the beginning
+    for (int i = 0; i < d; i++) {
+        vec.push_back(vec[0]);
+        vec.erase(vec.begin());
+    }
+
+
+    return vec;
+}
+/*******************/
 vector <int> createPermutation(string key, int N){
-    int cumSum =0;
+    int cumSum =key[0];
     vector <int> A;
     int j =0;
     unordered_set <int> seen;
-    for(int i =0;i<N;++i) {
-        if(i<key.length())
+    int keyCum;
+    for(int i =1;i<=N;++i) {
+        if(i<key.length()){
             cumSum = (cumSum +key[i])%N;
+        }
         else if(j<i){
+            if(i==key.length()){
+
+                keyCum = cumSum;
+                cout<<"Key: "<<key<<endl;
+                cout<<"Setting key cum sum: "<<keyCum<<"\n";
+            }
             cumSum=(cumSum +A[j])%N;
             j++;
         }
@@ -33,7 +56,7 @@ vector <int> createPermutation(string key, int N){
     }
 
 
-  
+
     int lind=0,rind = N-1, flag=0;
     while(lind<=rind) {
         if(flag == 0){
@@ -76,7 +99,7 @@ vector <int> createPermutation(string key, int N){
     }
 
 
-
+    A=rotate(A,keyCum);
     return A;
 }
 /*********************************************************************************/
