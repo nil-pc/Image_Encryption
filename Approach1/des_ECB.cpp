@@ -283,7 +283,7 @@ int main()
 
   Vec<unsigned int, 3>  pixel;
 
-  image= imread("Image/img2.jpg", CV_LOAD_IMAGE_UNCHANGED );
+  image= imread("images/img2.jpg", CV_LOAD_IMAGE_UNCHANGED );
   if ( !image.data )
   {
     cout<<"No image data \n";
