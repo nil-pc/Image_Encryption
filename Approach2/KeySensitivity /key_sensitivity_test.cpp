@@ -41,8 +41,8 @@ vector <int> createPermutation(string key, int N){
             if(i==key.length()){
 
                 keyCum = cumSum;
-                cout<<"Key: "<<key<<endl;
-                cout<<"Setting key cum sum: "<<keyCum<<"\n";
+                /*cout<<"Key: "<<key<<endl;
+                cout<<"Setting key cum sum: "<<keyCum<<"\n";*/
             }
             cumSum=(cumSum +A[j])%N;
             j++;
@@ -439,6 +439,8 @@ int main() {
   
   
   pwd=enc_pwd;
+  pattern =  createPermutation(pwd, rows* cols);
+  
   //vector<int>pattern =  createPermutation(pwd, rows* cols);
   newres = changeIntensity(res[0],res[1],res[2], pattern,pwd);
   res1 = encrypt(newres[0], newres[1], newres[2], pattern);
@@ -446,10 +448,13 @@ int main() {
 
   double percenDiff,count=0; 
   Mat encImage1,encImage2;
-   Vec<unsigned char, 3>  pixel,pixel1;
+   Vec<int, 3>  pixel,pixel1;
 
   encImage1=imread("1_encrypted.png", IMREAD_COLOR );
   encImage2=imread("2_encrypted.png", IMREAD_COLOR );
+
+  double binaryCount=0;
+  int val1,val2,val3;
   for(int r = 0; r < rows; ++r) {
     for(int c = 0; c < cols; ++c) {
       pixel= encImage1.at<Vec3b>(r,c);
@@ -461,18 +466,25 @@ int main() {
         count +=1;
       if(pixel[2]!=pixel1[2])
         count +=1;
+     
+     val1= pixel[0]^pixel1[0]; 
+     val2= pixel[1]^pixel1[1];
+     val3= pixel[2]^pixel1[2];
+     //cout<<pixel[0]<<" "<<pixel1[0]<<" "<<val1<<endl;
+     bitset<8> b1(val1);
+     bitset<8> b2(val2);
+     bitset<8> b3(val3);
+     binaryCount+=b1.count();
+     binaryCount+=b2.count();
+     binaryCount+=b3.count();
     }
   }
 
     percenDiff=(count/(rows*cols*3))*100;
+
+    double binpercenDiff=(binaryCount/(rows*cols*3*8))*100;
     cout<<"\nThe first image and second encrypted image are "<<percenDiff<<"% Different"<<endl;
-
-
-  
-
-
-  
-
+	cout<<"\nThe first image and second encrypted image are "<<binpercenDiff<<"% Different in binary"<<endl;
 
   return 0;
 }
